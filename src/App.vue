@@ -4,9 +4,9 @@
       <v-toolbar-title>MumuChallenge 2020</v-toolbar-title>
     </v-app-bar>
     <v-content>
-    <v-container>
-    <router-view/>
-    </v-container>
+      <v-container>
+        <router-view/>
+      </v-container>
     </v-content>
     <v-footer
       dark app

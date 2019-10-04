@@ -78,10 +78,6 @@ export default {
   },
   firestore: {
       scores: db.collection('scores').orderBy('created_at', 'desc'),
-  },
-  methods: {
-  },
-  mounted() {
-  },
+  }
 }
 </script>
