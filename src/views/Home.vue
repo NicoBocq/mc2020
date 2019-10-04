@@ -55,6 +55,12 @@ export default {
             value: 'player1',
           },
           {
+            text: 'Club',
+            align: 'center',
+            sortable: false,
+            value: 'club1',
+          },
+          {
             text: 'Score',
             value: 'score1',
             align:'center'
@@ -69,6 +75,12 @@ export default {
             value: 'player2',
             sortable: false,
             align:'center'
+          },
+          {
+            text: 'Club',
+            align: 'center',
+            sortable: false,
+            value: 'club2',
           },
         ],
     }

@@ -4,12 +4,22 @@
     <v-container>
       <v-row>
         <v-col
-          cols="4"
+          cols="2"
         >
           <v-text-field
             v-model="player1"
             :playerules="playerules"
             label="Joueur 1"
+            required
+            @keypress.enter="addScore"
+          ></v-text-field>
+        </v-col>
+        <v-col
+          cols="2"
+        >
+          <v-text-field
+            v-model="club1"
+            label="Club"
             required
             @keypress.enter="addScore"
           ></v-text-field>
@@ -39,12 +49,22 @@
           ></v-text-field>
         </v-col>
         <v-col
-          cols="4"
+          cols="2"
         >
           <v-text-field
             v-model="player2"
             :playerules="playerules"
             label="Joueur 2"
+            required
+            @keypress.enter="addScore"
+          ></v-text-field>
+        </v-col>
+                <v-col
+          cols="2"
+        >
+          <v-text-field
+            v-model="club2"
+            label="Club"
             required
             @keypress.enter="addScore"
           ></v-text-field>
