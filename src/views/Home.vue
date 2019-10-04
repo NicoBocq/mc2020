@@ -81,7 +81,7 @@ export default {
             align: 'center',
             sortable: false,
             value: 'club2',
-          },
+          }
         ],
     }
   },
@@ -90,6 +90,11 @@ export default {
   },
   firestore: {
       scores: db.collection('scores').orderBy('created_at', 'desc'),
-  }
+  },
+  methods: {
+    deleteScore (id) {
+      db.collection('scores').doc(id).delete()
+    }
+  },
 }
 </script>
