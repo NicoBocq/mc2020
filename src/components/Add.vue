@@ -86,7 +86,9 @@ export default {
     valid: false,
     scores:[],
     player1: '',
+    club1:'',
     player2:'',
+    club2:'',
     playerules: [
       v => !!v || 'Name is required',
       v => v.length <= 20 || 'Name must be less than 20 characters',
@@ -102,6 +104,9 @@ export default {
       scores: db.collection('scores').orderBy('created_at', 'desc'),
   },
   methods: {
+    deleteScore () {
+
+    },
     addScore () {
       this.errors = ''
 
