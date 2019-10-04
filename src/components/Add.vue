@@ -107,8 +107,10 @@ export default {
 
       db.collection('scores').add({
         player1: this.player1,
+        club1: this.club1,
         score1: this.score1,
         player2: this.player2,
+        club2: this.club2,
         score2: this.score2,
         game: "PES 2019",
         created_at:Date.now()
