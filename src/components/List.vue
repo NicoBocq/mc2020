@@ -64,8 +64,14 @@
         </v-dialog>
       </v-toolbar>
     </template>
+		<template v-slot:item.score="{ item }">
+      {{ item.score1 }} - {{ item.score2 }}
+			<br><small>{{ item.club1 }} / {{ item.club2 }}</small>
+    </template>
 		<template v-slot:item.player1="{ item }">
-      <v-chip :class="item.score1 > item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>{{ item.player1 }}</v-chip>
+      <v-chip :class="item.score1 > item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>
+				{{ item.player1 }}
+			</v-chip>
     </template>
 		<template v-slot:item.player2="{ item }">
       <v-chip :class="item.score1 < item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>{{ item.player2 }}</v-chip>
@@ -121,16 +127,10 @@ export default {
             value: 'player1',
           },
           {
-            text: '',
-            value: 'score1',
+            text: 'Score',
+            value: 'score',
 						align:'center',
 						sortable: false,
-          },
-          {
-            text: '',
-            value: 'score2',
-						align:'center',
-						sortable: false
           },
           {
             text: 'Joueur',
@@ -141,18 +141,19 @@ export default {
           { 
 						text: '',
 						value: 'action',
-						sortable: false
+						sortable: false,
+						align:"right"
 					}
 				],
 				dialog: false,
 				editedIndex: -1,
 				editedItem: {
-					player1: '',
+					player1: 'Ber',
 					score1: 0,
-					player2: '',
+					player2: 'Peg',
 					score2: 0,
-					club1: '',
-					club2:'',
+					club1: 'F.C. Autunois',
+					club2:'S.C. de Bonneveine',
 					game: 'PES 2019',
         	created_at:Date.now()
 				},
