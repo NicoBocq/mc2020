@@ -1,47 +1,34 @@
 <template>
   <div class="home">
-    <v-row>
+    <!-- <v-row>
       <v-col
         cols="12"
       >
         <Add />
       </v-col>
 
-    </v-row>
+    </v-row> -->
 
     <v-row>
       <v-col
         cols="12"
         md="8"
+        order="2"
+        order-md="1"
       >
-            <v-card>
-              <v-card-title>
-                Derniers scores
-                <div class="flex-grow-1"></div>
-                <v-text-field
-                  v-model="search"
-                  label="Rechercher"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="headers"
-                :items="scores"
-                :search="search"
-              ></v-data-table>
-            </v-card>
-
-        </v-col>
+        <list :scores = "scores" />
+      </v-col>
 
         <v-col
           cols="12"
           md="4"
+          order="1"
+          order-md="2"
         >
           <v-card v-for="(item, index) in stat" :key="index" dark class="mb-4">
 
             <v-list-item>
-              <v-list-item-avatar size="60" tile>
+              <v-list-item-avatar size="60">
                 <v-img :src="item.avatar" class="elevation-6"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
@@ -86,6 +73,7 @@
 
 import { db } from '@/repositories/db'
 import Add from '@/components/Add'
+import List from '@/components/List'
 
 const players = [
   { 
@@ -102,51 +90,11 @@ export default {
   name: 'home',
   data() {
     return {
-      myPrice: '',
-      myDesc:'',
-      errors:'',
       scores:[],
-      search:'',
-      headers: [
-          {
-            text: 'Joueur',
-            align: 'center',
-            sortable: false,
-            value: 'player1',
-          },
-          {
-            text: 'Club',
-            align: 'center',
-            sortable: false,
-            value: 'club1',
-          },
-          {
-            text: 'Score',
-            value: 'score1',
-            align:'center'
-          },
-          {
-            text: 'Score',
-            value: 'score2',
-            align:'center'
-          },
-          {
-            text: 'Joueur',
-            value: 'player2',
-            sortable: false,
-            align:'center'
-          },
-          {
-            text: 'Club',
-            align: 'center',
-            sortable: false,
-            value: 'club2',
-          }
-        ],
     }
   },
   components: {
-    Add
+    Add, List
   },
   firestore: {
     scores: db.collection('scores').orderBy('created_at', 'desc'),
@@ -171,11 +119,6 @@ export default {
       })
       return total
     }
-  },
-  methods: {
-    deleteScore (id) {
-      db.collection('scores').doc(id).delete()
-    }
-  },
+  }
 }
 </script>
