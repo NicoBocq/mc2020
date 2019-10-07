@@ -4,6 +4,13 @@
     :items="scores"
     class="elevation-1"
 		hide-default-header
+		:footer-props="{
+      /* showFirstLastPage: true, */
+      prevIcon: '<',
+      nextIcon: '>',
+			firstIcon: '<',
+      lastIcon: '>',
+    }"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -11,9 +18,9 @@
         <div class="flex-grow-1"></div>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on" icon>
-							<v-icon>
-								{{ icons.mdiPlusThick }}
+            <v-btn color="red darken-4" dark class="mb-2" v-on="on" icon>
+							<v-icon large>
+								{{ icons.mdiPlusCircle }}
 							</v-icon>
 						</v-btn>
           </template>
@@ -49,7 +56,7 @@
 
             <v-card-actions>
               <div class="flex-grow-1"></div>
-              <v-btn color="blue darken-1" text @click="save">
+              <v-btn color="red darken-4" text @click="save">
 								Save
 							</v-btn>
             </v-card-actions>
@@ -87,9 +94,11 @@
 import { db } from '@/repositories/db'
 
 import {
-    mdiPlusThick,
+    mdiPlusCircle,
     mdiPencil,
-    mdiDelete,
+		mdiDelete,
+		mdiChevronLeft,
+		mdiChevronRight
 	} from '@mdi/js'
 	
 export default {
@@ -98,9 +107,11 @@ export default {
 	data() {
     return {
 			icons: {
-        mdiPlusThick,
+        mdiPlusCircle,
         mdiPencil,
-        mdiDelete,
+				mdiDelete,
+				mdiChevronLeft,
+				mdiChevronRight
       },
 		 	headers: [
           {
