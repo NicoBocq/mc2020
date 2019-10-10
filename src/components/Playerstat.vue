@@ -1,6 +1,6 @@
 <template>
 	<v-card>
-		<v-card v-for="(item, index) in $store.getters.statPlayer" :key="index" dark class="mb-4">
+		<v-card v-for="(item, index) in statPlayer" :key="index" dark class="mb-4">
 			<v-list-item>
 				<v-list-item-avatar size="60">
 					<v-img :src="item.avatar" class="elevation-6"></v-img>
@@ -38,3 +38,11 @@
 		</v-card>
 	</v-card>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+	computed: mapGetters(['statPlayer'])
+}
+</script>
