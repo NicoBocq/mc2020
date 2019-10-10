@@ -1,14 +1,5 @@
 <template>
   <div class="home">
-    <!-- <v-row>
-      <v-col
-        cols="12"
-      >
-        <Add />
-      </v-col>
-
-    </v-row> -->
-
     <v-row>
       <v-col
         cols="12"
@@ -25,7 +16,7 @@
           order="1"
           order-md="2"
         >
-          <v-card v-for="(item, index) in stat" :key="index" dark class="mb-4">
+          <v-card v-for="(item, index) in $store.getters.statPlayer" :key="index" dark class="mb-4">
 
             <v-list-item>
               <v-list-item-avatar size="60">
@@ -71,57 +62,23 @@
 
 <script>
 
-import { db } from '@/repositories/db'
-import Add from '@/components/Add'
 import List from '@/components/List'
 
-const players = [
-  { 
-    name:'Ber',
-    avatar:require('../assets/ber.jpg')
-  },
-  { 
-    name: 'Peg',
-    avatar:require('../assets/peg.jpg')
-  }
-]
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'home',
   data() {
     return {
-      scores:[],
     }
   },
   components: {
-    Add, List
+    List
   },
-  firestore: {
-    scores: db.collection('scores').orderBy('created_at', 'desc'),
-  },
-  computed: {
-    stat () {
-      const total = players.map((e) => {
-        const container = {}
-        const isPresent = this.scores.filter(el => el.player1 === e.name || el.player2 === e.name)
-        const isP1 = this.scores.filter(el => el.player1 === e.name)
-        const isP2 = this.scores.filter(el => el.player2 === e.name)
-        container.name = e.name
-        container.avatar = e.avatar
-        container.total = isPresent.length
-        container.win = isP1.filter(el => el.score1 > el.score2).length + isP2.filter(el => el.score2 > el.score1).length
-        container.draw = isPresent.filter(el => el.score1 === el.score2).length
-        container.lose = container.total - (container.win + container.draw)
-        container.goals = isP1.reduce((acc, e) => acc + parseInt(e.score1),0) + isP2.reduce((acc, e) => acc + parseInt(e.score2),0)
-        container.goalsagainst = isP1.reduce((acc, e) => acc + parseInt(e.score2),0) + isP2.reduce((acc, e) => acc + parseInt(e.score1),0)
-        container.diff = parseInt(container.goals) - parseInt(container.goalsagainst)
-        return container
-      })
-      return total
-    },
-    greatest () {
-      
-    }
+  computed: mapState(['scores']),
+
+  mounted() {
+    this.$store.dispatch('bindScores')
   }
 }
 </script>

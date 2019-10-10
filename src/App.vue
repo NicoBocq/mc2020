@@ -2,6 +2,23 @@
   <v-app id="app">
     <v-app-bar dark color="red darken-4" app>
       <v-toolbar-title>MumuChallenge 2020</v-toolbar-title>
+      <template v-slot:extension>
+        <v-tabs
+          align-with-title
+          background-color="transparent"
+        >
+          <v-tab>
+            <router-link to="/" class="text-white">
+              Home
+            </router-link>
+          </v-tab>
+          <v-tab>
+            <router-link to="/stats">
+              Stat
+            </router-link>
+          </v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -25,14 +42,12 @@
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-  padding: 30px;
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #fff;
+    text-decoration: none;
     &.router-link-exact-active {
       color: #42b983;
     }
   }
-}
 </style>

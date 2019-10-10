@@ -20,7 +20,7 @@
           <template v-slot:activator="{ on }">
             <v-btn color="red darken-4" dark class="mb-2" v-on="on" icon>
 							<v-icon large>
-								{{ icons.mdiPlusCircle }}
+								{{ icons.mdiPlus }}
 							</v-icon>
 						</v-btn>
           </template>
@@ -100,7 +100,7 @@
 import { db } from '@/repositories/db'
 
 import {
-    mdiPlusCircle,
+    mdiPlus,
     mdiPencil,
 		mdiDelete,
 		mdiChevronLeft,
@@ -113,58 +113,59 @@ export default {
 	data() {
     return {
 			icons: {
-        mdiPlusCircle,
+        mdiPlus,
         mdiPencil,
 				mdiDelete,
 				mdiChevronLeft,
 				mdiChevronRight
       },
-		 	headers: [
-          {
-            text: 'Joueur',
-            align: 'center',
-            sortable: false,
-            value: 'player1',
-          },
-          {
-            text: 'Score',
-            value: 'score',
-						align:'center',
-						sortable: false,
-          },
-          {
-            text: 'Joueur',
-            value: 'player2',
-            sortable: false,
-            align:'center'
-          },
-          { 
-						text: '',
-						value: 'action',
-						sortable: false,
-						align:"right"
-					}
-				],
-				dialog: false,
-				editedIndex: -1,
-				editedItem: {
-					player1: 'Ber',
-					score1: 0,
-					player2: 'Peg',
-					score2: 0,
-					club1: 'F.C. Autunois',
-					club2:'S.C. de Bonneveine',
-					game: 'PES 2019',
-        	created_at:Date.now()
-				},
-      	defaultItem: {
-					player1: '',
-					score1: 0,
-					player2: '',
-					score2: 0,
-					club1: '',
-					club2:'',
-      	},
+      headers: 
+      [
+        {
+          text: 'Joueur',
+          align: 'center',
+          sortable: false,
+          value: 'player1',
+        },
+        {
+          text: 'Score',
+          value: 'score',
+          align:'center',
+          sortable: false,
+        },
+        {
+          text: 'Joueur',
+          value: 'player2',
+          sortable: false,
+          align:'center'
+        },
+        { 
+          text: '',
+          value: 'action',
+          sortable: false,
+          align:"right"
+        }
+      ],
+      dialog: false,
+      editedIndex: -1,
+      editedItem: {
+        player1: 'Ber',
+        score1: 0,
+        player2: 'Peg',
+        score2: 0,
+        club1: 'F.C. Autunois',
+        club2:'S.C. de Bonneveine',
+        game: 'PES 2019',
+        created_at:Date.now()
+      },
+      defaultItem: {
+        player1: '',
+        score1: 0,
+        player2: '',
+        score2: 0,
+        club1: '',
+        club2:'',
+      },
 		}
 	},
 	computed: {
@@ -178,51 +179,51 @@ export default {
 		},
 	},
 	methods: {
-      editItem (item) {
-				this.editedIndex = this.scores.indexOf(item)
-				/* Get id from firecloud object */
-				this.editedId = item.id
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (id) {
-        // const index = this.scores.indexOf(item)
-				// confirm('Méfi') && this.scores.splice(index, 1)
-				confirm('Méfi') && db.collection('scores').doc(id).delete()
-      },
-
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-					// Object.assign(this.scores[this.editedIndex], this.editedItem)
-					db.collection('scores').doc(this.editedId)
-						.set(this.editedItem)
-						// .then(() => {
-						// })
-						.catch((error) => {
-							console.log(error)
-						})
-        } else {
-					// this.scores.push(this.editedItem)
-					db.collection('scores')
-						.add(this.editedItem)
-						// .then(
-						// 	console.log('added')
-						// )
-						.catch((error) => {
-							console.log(error)
-						})
-        }
-        this.close()
-      },
+    editItem (item) {
+      this.editedIndex = this.scores.indexOf(item)
+      /* Get id from firecloud object */
+      this.editedId = item.id
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
     },
+
+    deleteItem (id) {
+      // const index = this.scores.indexOf(item)
+      // confirm('Méfi') && this.scores.splice(index, 1)
+      confirm('Méfi') && db.collection('scores').doc(id).delete()
+    },
+
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+
+    save () {
+      if (this.editedIndex > -1) {
+        // Object.assign(this.scores[this.editedIndex], this.editedItem)
+        db.collection('scores').doc(this.editedId)
+          .set(this.editedItem)
+          // .then(() => {
+          // })
+          // .catch((error) => {
+          // 	console.log(error)
+          // })
+      } else {
+        // this.scores.push(this.editedItem)
+        db.collection('scores')
+          .add(this.editedItem)
+          // .then(
+          // 	console.log('added')
+          // )
+          // .catch((error) => {
+          // 	console.log(error)
+          // })
+      }
+      this.close()
+    },
+  },
 }
 </script>

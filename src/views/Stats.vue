@@ -17,6 +17,7 @@
 import { db } from '@/repositories/db'
 
 export default {
+  name:'stats',
   data() {
     return {
       scores:[],
@@ -32,7 +33,7 @@ export default {
     }
   },
   firestore: {
-    scores: db.collection('scores').orderBy('created_at', 'desc'),
+    scores: db.collection('scores').orderBy('created_at'),
   },
 }
 </script>
