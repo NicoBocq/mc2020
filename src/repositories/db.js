@@ -8,5 +8,5 @@ import 'firebase/firestore'
 
 // Get a Firestore instance
 export const db = firebase
-  .initializeApp({ projectId: 'mc2020-83670' })
+  .initializeApp({ projectId: process.env.VUE_APP_PROJECT_ID })
   .firestore()
