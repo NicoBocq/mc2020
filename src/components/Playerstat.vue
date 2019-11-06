@@ -43,6 +43,6 @@
 import { mapGetters } from 'vuex'
 
 export default {
-	computed: mapGetters(['statPlayer'])
+	computed: mapGetters([ 'statPlayer'])
 }
 </script>

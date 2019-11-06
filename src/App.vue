@@ -2,7 +2,9 @@
   <v-app id="app">
     <v-app-bar dark color="red darken-4" app>
       <v-toolbar-title>MumuChallenge 2020</v-toolbar-title>
+
       <template v-slot:extension>
+        <Add />
         <v-tabs
           align-with-title
           background-color="transparent"
@@ -15,6 +17,11 @@
           <v-tab>
             <router-link to="/stats">
               Stat
+            </router-link>
+          </v-tab>
+          <v-tab>
+            <router-link to="/admin">
+              Admin
             </router-link>
           </v-tab>
         </v-tabs>
@@ -33,6 +40,18 @@
     </v-footer>
   </v-app>
 </template>
+
+<script>
+
+import Add from '@/components/Add'
+
+export default {
+  components: {
+    Add
+  }
+  
+}
+</script>
 
 <style lang="scss">
 #app {

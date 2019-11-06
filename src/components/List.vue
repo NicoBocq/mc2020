@@ -17,48 +17,17 @@
         <v-toolbar-title>Derniers matchs</v-toolbar-title>
         <div class="flex-grow-1"></div>
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <v-btn color="red darken-4" dark class="mb-2" v-on="on" icon>
-							<v-icon large>
-								{{ icons.mdiPlus }}
-							</v-icon>
-						</v-btn>
-          </template>
           <v-card>
             <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
+              <span class="headline">Modifier</span>
             </v-card-title>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.player1" label="Joueur"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.score1" label="Score"></v-text-field>
-                  </v-col>
-									<v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.club1" label="Club"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.player2" label="Joueur"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.score2" label="Score"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.club2" label="Club"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+            <Editscore :editedItem = 'editedItem' />
 
             <v-card-actions>
-              <div class="flex-grow-1"></div>
-              <v-btn color="red darken-4" text @click="save">
-								Save
-							</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="saveScore">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -74,19 +43,21 @@
 			</v-chip>
     </template>
 		<template v-slot:item.player2="{ item }">
-      <v-chip :class="item.score1 < item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>{{ item.player2 }}</v-chip>
+      <v-chip :class="item.score1 < item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>
+        {{ item.player2 }}
+      </v-chip>
     </template>
     <template v-slot:item.action="{ item }" class="text-right">
       <v-icon
         small
         class="mr-2"
-        @click="editItem(item)"
+        @click="editScore(item)"
       >
         {{ icons.mdiPencil }}
       </v-icon>
       <v-icon
         small
-        @click="deleteItem(item.id)"
+        @click="removeScore(item.id)"
       >
         {{ icons.mdiDelete }}
       </v-icon>
@@ -97,10 +68,11 @@
 
 <script>
 
-import { db } from '@/repositories/db'
+import { mapState } from 'vuex'
+
+import Editscore from '@/components/Editscore'
 
 import {
-    mdiPlus,
     mdiPencil,
 		mdiDelete,
 		mdiChevronLeft,
@@ -108,12 +80,13 @@ import {
 	} from '@mdi/js'
 	
 export default {
-	name: 'list',
-	props: ['scores'],
+  name: 'list',
+  components: {
+    Editscore
+  },
 	data() {
     return {
 			icons: {
-        mdiPlus,
         mdiPencil,
 				mdiDelete,
 				mdiChevronLeft,
@@ -147,82 +120,36 @@ export default {
         }
       ],
       dialog: false,
-      editedIndex: -1,
       editedItem: {
-        player1: 'Ber',
-        score1: 0,
-        player2: 'Peg',
-        score2: 0,
-        club1: 'F.C. Autunois',
-        club2:'S.C. de Bonneveine',
-        game: 'PES 2019',
-        created_at:Date.now()
-      },
-      defaultItem: {
         player1: '',
-        score1: 0,
-        player2: '',
-        score2: 0,
+        score1: '',
+        player2:'',
+        score2:'',
         club1: '',
         club2:'',
-      },
+        game: '',
+      }
 		}
 	},
-	computed: {
-		formTitle () {
-			return this.editedIndex === -1 ? 'Ajouter' : 'Modifier'
-		},
-	},
-	watch: {
-		dialog (val) {
-			val || this.close()
-		},
-	},
-	methods: {
-    editItem (item) {
-      this.editedIndex = this.scores.indexOf(item)
-      /* Get id from firecloud object */
-      this.editedId = item.id
+  computed: 
+  mapState(['scores']),
+
+  methods: {
+    removeScore (id) {
+      confirm('Méfi') && this.$store.dispatch('removeScore',id)
+    },
+    editScore (item) {
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-
-    deleteItem (id) {
-      // const index = this.scores.indexOf(item)
-      // confirm('Méfi') && this.scores.splice(index, 1)
-      confirm('Méfi') && db.collection('scores').doc(id).delete()
+    saveScore () {
+      this.$store.dispatch('updateScore',this.editedItem)
+      this.close()
     },
-
     close () {
       this.dialog = false
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      }, 300)
-    },
-
-    save () {
-      if (this.editedIndex > -1) {
-        // Object.assign(this.scores[this.editedIndex], this.editedItem)
-        db.collection('scores').doc(this.editedId)
-          .set(this.editedItem)
-          // .then(() => {
-          // })
-          // .catch((error) => {
-          // 	console.log(error)
-          // })
-      } else {
-        // this.scores.push(this.editedItem)
-        db.collection('scores')
-          .add(this.editedItem)
-          // .then(
-          // 	console.log('added')
-          // )
-          // .catch((error) => {
-          // 	console.log(error)
-          // })
-      }
-      this.close()
+      // this.editedItem = Object.assign({}, this.editedItem)
+      // this.editedIndex = -1
     },
   },
 }

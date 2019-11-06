@@ -7,7 +7,7 @@
         order="2"
         order-md="1"
       >
-        <List :scores = "scores" />
+        <Boxscore />
       </v-col>
 
       <v-col
@@ -24,10 +24,8 @@
 
 <script>
 
-import List from '@/components/List'
+import Boxscore from '@/components/Boxscore'
 import Playerstat from '@/components/Playerstat'
-
-import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'home',
@@ -36,11 +34,7 @@ export default {
     }
   },
   components: {
-    List, Playerstat
-  },
-  computed: {
-    ...mapState(['scores']),
-    // ...mapGetters(['playerStat'])
+    Boxscore, Playerstat
   },
   mounted() {
     this.$store.dispatch('bindScores')

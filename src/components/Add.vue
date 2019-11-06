@@ -1,133 +1,86 @@
 <template>
-<v-card>
-  <v-form v-model="valid">
-    <v-container>
-      <v-row>
-        <v-col
-          cols="2"
-        >
-          <v-text-field
-            v-model="player1"
-            :playerules="playerules"
-            label="Joueur 1"
-            required
-            @keypress.enter="addScore"
-          ></v-text-field>
-        </v-col>
-        <v-col
-          cols="2"
-        >
-          <v-text-field
-            v-model="club1"
-            label="Club"
-            required
-            @keypress.enter="addScore"
-          ></v-text-field>
-        </v-col>
-        <v-col
-          cols="2"
-        >
-          <v-text-field
-            v-model="score1"
-            :scoreRules="scoreRules"
-            label="Score"
-            required
-            type="number"
-            @keypress.enter="addScore"
-          ></v-text-field>
-        </v-col>
-        <v-col
-          cols="2"
-        >
-          <v-text-field
-            v-model="score2"
-            :scoreRules="scoreRules"
-            label="Score"
-            required
-            type="number"
-            @keypress.enter="addScore"
-          ></v-text-field>
-        </v-col>
-        <v-col
-          cols="2"
-        >
-          <v-text-field
-            v-model="player2"
-            :playerules="playerules"
-            label="Joueur 2"
-            required
-            @keypress.enter="addScore"
-          ></v-text-field>
-        </v-col>
-                <v-col
-          cols="2"
-        >
-          <v-text-field
-            v-model="club2"
-            label="Club"
-            required
-            @keypress.enter="addScore"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
-  </v-card>
-</template>
+  <v-dialog v-model="dialog" max-width="500px">
+    <template v-slot:activator="{ on }">
+      <v-btn v-on="on"
+        color="pink"
+        dark
+        large
+        absolute
+        bottom
+        right
+        fab
+      >
+        <v-icon>{{ icons.mdiPlus }}</v-icon>
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="headline">Ajouter</span>
+      </v-card-title>
 
+      <Editscore :editedItem = 'editedItem' />
+
+      <v-card-actions>
+        <div class="flex-grow-1"></div>
+        <v-btn color="red darken-4" text @click="save">
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
 
 <script>
 
-import { db } from '@/repositories/db'
+import Editscore from '@/components/Editscore'
+
+import {
+    mdiPlus
+	} from '@mdi/js'
 
 export default {
   name:'Add',
-  data: () => ({
-    valid: false,
-    scores:[],
-    player1: '',
-    club1:'',
-    player2:'',
-    club2:'',
-    playerules: [
-      v => !!v || 'Name is required',
-      v => v.length <= 20 || 'Name must be less than 20 characters',
-    ],
-    score1: '',
-    score2: '',
-    scoreRules: [
-      v => !!v || 'Score is required',
-    ],
-    error:''
-  }),
-  firestore: {
-      scores: db.collection('scores').orderBy('created_at', 'desc'),
+  components: {
+    Editscore
   },
-  methods: {
-    deleteScore () {
-
-    },
-    addScore () {
-      this.errors = ''
-
-      db.collection('scores').add({
-        player1: this.player1,
-        club1: this.club1,
-        score1: this.score1,
-        player2: this.player2,
-        club2: this.club2,
-        score2: this.score2,
-        game: "PES 2019",
+  data() {
+    return {
+      icons: {
+        mdiPlus,
+      },
+      dialog: false,
+      editedItem: {
+        player1: 'Ber',
+        score1: 0,
+        player2: 'Peg',
+        score2: 0,
+        club1: 'F.C. Autunois',
+        club2:'S.C. de Bonneveine',
+        game: 'PES 2019',
         created_at:Date.now()
-      }).then((response) => {
-        if (response) {
-        this.player1 = this.player1
-        this.player2 = this.player2
       }
-      }).catch((error) => {
-        this.errors = error
-      })
     }
+  },
+  computed: {
+		formTitle () {
+			return this.editedIndex === -1 ? 'Ajouter' : 'Modifier'
+		},
+	},
+	watch: {
+		dialog (val) {
+			val || this.close()
+		},
+	},
+	methods: {
+    save () {
+      this.$store.dispatch('addScore',this.editedItem)
+      this.close()
+    },
+    close () {
+      this.dialog = false
+      this.editedItem = Object.assign({}, this.editedItem)
+      this.editedIndex = -1
+    },
   },
 }
 </script>
