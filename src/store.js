@@ -20,6 +20,7 @@ const players = [
 const dbScores = db.collection('scores')
 
 export default new Vuex.Store({
+  strict: true,
   state: {
     scores:[],
     players:players,
@@ -31,9 +32,6 @@ export default new Vuex.Store({
     bindScores: firestoreAction(({ bindFirestoreRef }) => {
       return bindFirestoreRef('scores', dbScores.orderBy('created_at', 'desc'))
     }),
-    // SAVE_SCORE : (context,payload) => {
-    //   context.commit('ADD_SCORE',payload)
-    // },
     addScore: firestoreAction((context, score) => {
       dbScores
         .add(score)
@@ -43,10 +41,10 @@ export default new Vuex.Store({
         .doc(scoreId)
         .delete()
     }),
-    updateScore: firestoreAction((context, score) => {
-      dbScores
-        .doc(score.id)
-        .update(score)
+    updateScore: firestoreAction((context, payload) => {
+      return dbScores
+        .doc(payload.id)
+        .set(payload.data)
     })
   },
   getters: {

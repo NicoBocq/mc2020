@@ -128,22 +128,28 @@ export default {
         club1: '',
         club2:'',
         game: '',
-      }
+      },
+      itemId:''
 		}
 	},
   computed: 
-  mapState(['scores']),
+    mapState(['scores']),
 
   methods: {
     removeScore (id) {
       confirm('Méfi') && this.$store.dispatch('removeScore',id)
     },
     editScore (item) {
-      this.editedItem = Object.assign({}, item)
+      this.itemId = item.id
+      this.editedItem = item
       this.dialog = true
     },
     saveScore () {
-      this.$store.dispatch('updateScore',this.editedItem)
+      this.$store.dispatch('updateScore', {
+        id: this.itemId,
+        data: this.editedItem
+      })
+      this.itemId = ''
       this.close()
     },
     close () {

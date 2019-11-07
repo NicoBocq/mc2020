@@ -22,6 +22,9 @@ export default {
   },
   components: {
     List
+  },
+  mounted() {
+    this.$store.dispatch('bindScores')
   }
 }
 </script>
