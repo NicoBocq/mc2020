@@ -141,7 +141,7 @@ export default {
     },
     editScore (item) {
       this.itemId = item.id
-      this.editedItem = item
+      this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
     saveScore () {
