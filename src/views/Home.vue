@@ -38,6 +38,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('bindScores')
+    this.$store.dispatch('bindUsers')
   }
 }
 </script>

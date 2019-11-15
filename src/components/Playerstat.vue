@@ -31,6 +31,19 @@
 								<td class="text-left">Différence</td>
 								<td>{{ item.diff }} ({{ item.goals }}/{{ item.goalsagainst }})</td>
 							</tr>
+							<tr>
+								<td colspan="2">
+									<div class="last10">
+										<div 
+											:class="'last10-item bg-'+item"
+											v-for="(item, index) in item.last"
+											:key="'last10-'+ index"
+										>
+											{{ item }}
+										</div>
+									</div>
+								</td>
+							</tr>
 						</tbody>
 					</template>
 				</v-simple-table>
@@ -46,3 +59,33 @@ export default {
 	computed: mapGetters([ 'statPlayer'])
 }
 </script>
+
+<style scoped>
+
+.last10 {
+	padding:0.5rem 0;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 0.5rem;
+	align-items: center;
+	text-transform: uppercase;
+}
+
+.last10-item {
+	min-height: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.bg-w {
+	background-color: green;
+}
+.bg-d {
+	background-color: grey;
+}
+.bg-l {
+	background-color: red;
+}
+
+</style>

@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-app-bar dark color="red darken-4" app>
+    <v-app-bar dark color="black" app>
       <v-toolbar-title>MumuChallenge 2020</v-toolbar-title>
 
       <template v-slot:extension>
@@ -10,17 +10,12 @@
           background-color="transparent"
         >
           <v-tab>
-            <router-link to="/" class="text-white">
+            <router-link to="/" class="router-link">
               Home
             </router-link>
           </v-tab>
           <v-tab>
-            <router-link to="/stats">
-              Stat
-            </router-link>
-          </v-tab>
-          <v-tab>
-            <router-link to="/admin">
+            <router-link to="/admin" class="router-link">
               Admin
             </router-link>
           </v-tab>
@@ -69,4 +64,7 @@ export default {
       color: #42b983;
     }
   }
+.v-application a.router-link {
+  color: #fff;
+}
 </style>

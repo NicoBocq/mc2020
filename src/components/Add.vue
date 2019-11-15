@@ -1,8 +1,12 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
+  <v-dialog
+    v-model="dialog"
+    max-width="500px"
+    persistent
+  >
     <template v-slot:activator="{ on }">
       <v-btn v-on="on"
-        color="pink"
+        color="red darken-4"
         dark
         large
         absolute
@@ -22,7 +26,8 @@
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="red darken-4" text @click="save">
+        <v-btn color="" text @click="close">Close</v-btn>
+        <v-btn color="" text @click="save">
           Save
         </v-btn>
       </v-card-actions>
@@ -50,9 +55,9 @@ export default {
       },
       dialog: false,
       editedItem: {
-        player1: 'Ber',
+        player1:'',
         score1: 0,
-        player2: 'Peg',
+        player2:'',
         score2: 0,
         club1: 'F.C. Autunois',
         club2:'S.C. de Bonneveine',

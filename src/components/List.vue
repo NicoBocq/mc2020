@@ -26,8 +26,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="saveScore">Save</v-btn>
+              <v-btn color="" text @click="close">Close</v-btn>
+              <v-btn color="" text @click="saveScore">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -38,14 +38,10 @@
 			<br><small>{{ item.club1 }} / {{ item.club2 }}</small>
     </template>
 		<template v-slot:item.player1="{ item }">
-      <v-chip :class="item.score1 > item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>
 				{{ item.player1 }}
-			</v-chip>
     </template>
 		<template v-slot:item.player2="{ item }">
-      <v-chip :class="item.score1 < item.score2 ? 'green darken-3' : 'grey lighten-1'" dark>
-        {{ item.player2 }}
-      </v-chip>
+      {{ item.player2 }}
     </template>
     <template v-slot:item.action="{ item }" class="text-right">
       <v-icon
@@ -149,7 +145,7 @@ export default {
         id: this.itemId,
         data: this.editedItem
       })
-      this.itemId = ''
+      this.itemId = -1
       this.close()
     },
     close () {
